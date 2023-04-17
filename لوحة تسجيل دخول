@@ -1,0 +1,31 @@
+import requests
+
+# معلومات تسجيل الدخول
+username = 'your_username'
+password = 'your_password'
+
+# تحديد رابط صفحة تسجيل الدخول
+login_url = 'https://github.com/login'
+
+# إنشاء جلسة session
+session = requests.session()
+
+# الحصول على معرف CSRF token
+response = session.get(login_url)
+csrf_token = response.cookies['XSRF-TOKEN']
+
+# البيانات المطلوبة لتسجيل الدخول
+login_data = {
+    'login': username,
+    'password': password,
+    'authenticity_token': csrf_token
+}
+
+# إرسال طلب تسجيل الدخول
+response = session.post(login_url, data=login_data)
+
+# التحقق من نجاح عملية تسجيل الدخول
+if response.status_code == 200:
+    print('تم تسجيل الدخول بنجاح!')
+else:
+    print('فشل تسجيل الدخول.')
